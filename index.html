@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crib Compass – Student Housing Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FDF8F2;
+    --warm-white: #FFFCF8;
+    --sand: #F5EFE4;
+    --sand-dark: #E8DFD0;
+    --terracotta: #C96A3F;
+    --terracotta-light: #F0E0D6;
+    --terracotta-dark: #9E4F2A;
+    --forest: #2D5A3D;
+    --forest-light: #EAF2ED;
+    --forest-mid: #4A8060;
+    --sky: #3B6FA8;
+    --sky-light: #E8F0F9;
+    --amber: #D4903A;
+    --amber-light: #FFF3E0;
+    --text: #1E1A14;
+    --text-muted: #6B6357;
+    --text-light: #9E9489;
+    --border: rgba(30,26,20,0.1);
+    --border-mid: rgba(30,26,20,0.18);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 16px rgba(30,26,20,0.08);
+    --shadow-sm: 0 1px 6px rgba(30,26,20,0.06);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--cream); color: var(--text); font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253,248,242,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--terracotta); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .nav-logo span { font-size: 1.3rem; }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a { font-size: 0.875rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; font-weight: 500; }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-cta { background: var(--terracotta); color: white !important; padding: 0.45rem 1rem; border-radius: 30px; font-weight: 600 !important; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--terracotta-dark) !important; color: white !important; }
+  @media (max-width: 640px) { .nav-links { display: none; } .nav-external { display: flex !important; } }
+
+  /* SECTIONS */
+  section { padding: 5rem 1.5rem; }
+  .container { max-width: 1080px; margin: 0 auto; }
+  .section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--text); }
+  .section-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; line-height: 1.7; }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--terracotta); color: white; font-weight: 600;
+    padding: 0.8rem 1.6rem; border-radius: 50px; font-size: 0.95rem;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    font-family: var(--font-body);
+  }
+  .btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--text); font-weight: 600;
+    padding: 0.8rem 1.6rem; border-radius: 50px; font-size: 0.95rem;
+    text-decoration: none; border: 1.5px solid var(--border-mid); cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: var(--font-body);
+  }
+  .btn-outline:hover { border-color: var(--terracotta); background: var(--terracotta-light); }
+  .btn-forest { background: var(--forest); }
+  .btn-forest:hover { background: #1e3d29; }
+
+  /* CARDS */
+  .card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ===================== HERO ===================== */
+  #hero {
+    background: var(--warm-white);
+    padding: 5rem 1.5rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; top: 0; right: 0; width: 45%; height: 100%;
+    background: linear-gradient(135deg, var(--terracotta-light) 0%, var(--sand) 100%);
+    clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.5;
+  }
+  .hero-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--forest-light); color: var(--forest);
+    font-size: 0.8rem; font-weight: 600; padding: 0.35rem 0.9rem;
+    border-radius: 30px; margin-bottom: 1.5rem;
+    border: 1px solid rgba(45,90,61,0.15);
+  }
+  .hero-title {
+    font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700; line-height: 1.12; max-width: 680px; margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+  .hero-title em { color: var(--terracotta); font-style: normal; }
+  .hero-sub { font-size: 1.1rem; color: var(--text-muted); max-width: 520px; margin-bottom: 2.5rem; line-height: 1.7; }
+  .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .hero-stat-num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text); }
+  .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* ===================== HOW IT WORKS ===================== */
+  #how { background: var(--cream); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .step-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.75rem; position: relative; overflow: hidden; }
+  .step-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .step-card.s1::before { background: var(--terracotta); }
+  .step-card.s2::before { background: var(--forest-mid); }
+  .step-card.s3::before { background: var(--sky); }
+  .step-num { font-family: var(--font-display); font-size: 3.5rem; font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+  .s1 .step-num { color: var(--terracotta-light); }
+  .s2 .step-num { color: var(--forest-light); }
+  .s3 .step-num { color: var(--sky-light); }
+  .step-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .step-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+  /* ===================== QUICK START ===================== */
+  #quickstart { background: var(--sand); }
+  .qs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .qs-card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .qs-icon {
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .qs-card h4 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; }
+  .qs-card p { font-size: 0.85rem; color: var(--text-muted); }
+  .qs-action { margin-top: 2rem; text-align: center; }
+
+  /* ===================== SCENARIOS ===================== */
+  #scenarios { background: var(--warm-white); }
+  .scenarios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .scenario-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .scenario-header { padding: 1.5rem; }
+  .scenario-tag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 0.75rem; }
+  .s-low .scenario-tag { background: var(--forest-light); color: var(--forest); }
+  .s-mid .scenario-tag { background: var(--sky-light); color: var(--sky); }
+  .s-high .scenario-tag { background: var(--amber-light); color: var(--amber); }
+  .s-low .scenario-header { background: var(--forest-light); }
+  .s-mid .scenario-header { background: var(--sky-light); }
+  .s-high .scenario-header { background: var(--amber-light); }
+  .scenario-rent { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .scenario-label { font-size: 0.85rem; color: var(--text-muted); }
+  .scenario-body { padding: 1.25rem 1.5rem; background: var(--warm-white); }
+  .scenario-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 0.6rem; font-size: 0.88rem; }
+  .scenario-row strong { color: var(--text-muted); min-width: 70px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  /* ===================== NEIGHBORHOODS ===================== */
+  #neighborhoods { background: var(--cream); }
+  .nbhd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .nbhd-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; }
+  .nbhd-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .nbhd-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .nbhd-cost { font-size: 0.82rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 1rem; }
+  .nbhd-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
+  .pro-con { display: flex; flex-direction: column; gap: 6px; }
+  .pro-con-item { font-size: 0.85rem; display: flex; gap: 7px; align-items: flex-start; }
+  .pro-con-item.pro::before { content: '✓'; color: var(--forest-mid); font-weight: 700; flex-shrink: 0; }
+  .pro-con-item.con::before { content: '✗'; color: var(--terracotta); font-weight: 700; flex-shrink: 0; }
+
+  /* ===================== BUDGET PLANNER ===================== */
+  #budget { background: var(--sand); }
+  .budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .budget-card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem; text-align: center;
+  }
+  .budget-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+  .budget-card h4 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; color: var(--text); }
+  .budget-range { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--terracotta); }
+  .budget-note { font-size: 0.8rem; color: var(--text-light); margin-top: 0.3rem; }
+  .budget-tip { background: var(--terracotta-light); border: 1px solid rgba(201,106,63,0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-top: 1.5rem; display: flex; gap: 12px; align-items: flex-start; }
+  .budget-tip-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .budget-tip p { font-size: 0.9rem; color: var(--terracotta-dark); }
+
+  /* ===================== SCAMS ===================== */
+  #scams { background: var(--warm-white); }
+  .scams-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+  @media (max-width: 680px) { .scams-layout { grid-template-columns: 1fr; } }
+  .scams-block h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .scam-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .scam-list li {
+    background: var(--cream); border-radius: var(--radius-sm);
+    padding: 0.7rem 1rem; font-size: 0.88rem; display: flex; gap: 8px; align-items: flex-start;
+  }
+  .scam-list li::before { content: '⚠'; font-size: 0.85rem; flex-shrink: 0; }
+  .safe-list li::before { content: '✓'; color: var(--forest-mid); font-size: 0.9rem; flex-shrink: 0; }
+  .safe-list li { background: var(--forest-light); }
+
+  /* ===================== CHECKLIST ===================== */
+  #checklist { background: var(--cream); }
+  .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+  .check-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; }
+  .check-item { display: flex; align-items: center; gap: 10px; padding: 0.5rem 0; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+  .check-item:last-child { border-bottom: none; }
+  .check-box { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border-mid); flex-shrink: 0; }
+  .check-card h4 { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--terracotta); margin-bottom: 0.75rem; }
+
+  /* ===================== TEMPLATES ===================== */
+  #templates { background: var(--sand); }
+  .templates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+  .template-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .template-head { background: var(--sand-dark); padding: 0.9rem 1.25rem; display: flex; align-items: center; gap: 8px; }
+  .template-head h4 { font-weight: 600; font-size: 0.9rem; }
+  .template-body { padding: 1.25rem; font-size: 0.88rem; line-height: 1.65; color: var(--text-muted); background: var(--warm-white); }
+  .template-body em { color: var(--sky); font-style: normal; font-weight: 600; }
+  .copy-btn { display: block; width: 100%; text-align: center; padding: 0.6rem; font-size: 0.82rem; font-weight: 600; color: var(--terracotta); background: var(--terracotta-light); border: none; cursor: pointer; font-family: var(--font-body); transition: background 0.2s; }
+  .copy-btn:hover { background: #eed7cc; }
+
+  /* ===================== TIMELINE ===================== */
+  #timeline { background: var(--warm-white); }
+  .timeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2.5rem; position: relative; }
+  .week-card { background: var(--cream); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; position: relative; }
+  .week-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--terracotta); margin-bottom: 0.4rem; }
+  .week-theme { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; }
+  .week-tasks { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .week-tasks li { font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 6px; }
+  .week-tasks li::before { content: '→'; color: var(--terracotta); font-weight: 700; flex-shrink: 0; }
+
+  /* ===================== AI ASSISTANT ===================== */
+  #ai-section {
+    background: var(--forest);
+    padding: 5rem 1.5rem;
+  }
+  .ai-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  @media (max-width: 700px) { .ai-inner { grid-template-columns: 1fr; } }
+  .ai-text .section-label { color: rgba(255,255,255,0.6); }
+  .ai-text .section-title { color: white; }
+  .ai-text .section-sub { color: rgba(255,255,255,0.72); }
+  .ai-features { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; margin-bottom: 2rem; }
+  .ai-feature { display: flex; gap: 10px; align-items: flex-start; color: rgba(255,255,255,0.85); font-size: 0.92rem; }
+  .ai-feature::before { content: '◆'; color: rgba(255,255,255,0.4); font-size: 0.6rem; margin-top: 4px; flex-shrink: 0; }
+  .ai-chat-preview { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius); padding: 1.5rem; }
+  .chat-bubble { border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.88rem; margin-bottom: 0.75rem; max-width: 85%; }
+  .chat-user { background: var(--terracotta); color: white; margin-left: auto; border-bottom-right-radius: 4px; }
+  .chat-ai { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); border-bottom-left-radius: 4px; }
+  .chat-typing { display: flex; gap: 4px; align-items: center; padding: 0.75rem 1rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); animation: bounce 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+  /* ===================== DISCLAIMER ===================== */
+  #disclaimer { background: var(--sand); padding: 2.5rem 1.5rem; }
+  .disclaimer-box { max-width: 1080px; margin: 0 auto; background: var(--warm-white); border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 1.25rem 1.5rem; display: flex; gap: 12px; align-items: flex-start; }
+  .disclaimer-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+  .disclaimer-box p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .disclaimer-box strong { color: var(--text); }
+
+  /* ===================== FOOTER ===================== */
+  footer { background: var(--text); padding: 2.5rem 1.5rem; text-align: center; }
+  footer p { color: rgba(255,255,255,0.45); font-size: 0.85rem; }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+  footer a:hover { color: var(--terracotta); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    section { padding: 3.5rem 1.25rem; }
+    .hero-bg { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span>🧭</span> Crib Compass</a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#scenarios">Scenarios</a>
+    <a href="#budget">Budget</a>
+    <a href="#scams">Stay Safe</a>
+    <a href="#ai-section" class="nav-cta">AI Assistant</a>
+  </div>
+  <a href="https://campus-housing-two.vercel.app/" target="_blank" rel="noopener noreferrer" class="nav-cta nav-external" style="background:var(--forest);color:white;text-decoration:none;font-size:0.875rem;">🏠 Find Listings</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">🎓 Built for college students</div>
+    <h1 class="hero-title">Find student housing<br><em>without the overwhelm</em></h1>
+    <p class="hero-sub">Plan your budget, understand your options, and take the right steps to secure housing near your campus — all in one place.</p>
+    <div class="hero-buttons">
+      <a href="#quickstart" class="btn-primary">🗺 Start Your Housing Plan</a>
+      <a href="#ai-section" class="btn-outline">💬 Get Personalized Guidance</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">6 Steps</div>
+        <div class="hero-stat-label">To find your place</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">Free</div>
+        <div class="hero-stat-label">No account needed</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">AI-Powered</div>
+        <div class="hero-stat-label">Personalized guidance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <p class="section-label">How It Works</p>
+    <h2 class="section-title">Three steps to housing clarity</h2>
+    <p class="section-sub">No confusing forms. No endless searching. Just a clear path from "I don't know where to start" to confidently securing your place.</p>
+    <div class="steps-grid">
+      <div class="step-card s1">
+        <div class="step-num">01</div>
+        <h3>Tell us your situation</h3>
+        <p>Share your budget, roommate preferences, move-in timing, and what matters most to you.</p>
+      </div>
+      <div class="step-card s2">
+        <div class="step-num">02</div>
+        <h3>Understand your options</h3>
+        <p>See realistic housing scenarios with honest tradeoffs — so you know exactly what to expect before committing.</p>
+      </div>
+      <div class="step-card s3">
+        <div class="step-num">03</div>
+        <h3>Follow your action plan</h3>
+        <p>Get a week-by-week guide with templates, checklists, and next steps tailored to your timeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section id="quickstart">
+  <div class="container">
+    <p class="section-label">Quick Start</p>
+    <h2 class="section-title">What's your housing situation?</h2>
+    <p class="section-sub">Fill in a few details below to get matched with the right scenarios and guidance. Use the AI assistant for a fully personalized experience.</p>
+    <div class="qs-grid">
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#F0E0D6;">💰</div>
+        <div>
+          <h4>Monthly Budget</h4>
+          <p>Your max rent per person (excluding utilities)</p>
+        </div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#EAF2ED;">📅</div>
+        <div>
+          <h4>Move-in Date</h4>
+          <p>Start of semester or specific month you need housing</p>
+        </div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#E8F0F9;">👥</div>
+        <div>
+          <h4>Roommates</h4>
+          <p>Solo, 1 roommate, or a group — who's coming with you?</p>
+        </div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#FFF3E0;">🏠</div>
+        <div>
+          <h4>Housing Type</h4>
+          <p>Shared room, private room, studio, or full apartment</p>
+        </div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#F0E0D6;">🚌</div>
+        <div>
+          <h4>Transportation</h4>
+          <p>Car, public transit, walking, or bike distance to campus</p>
+        </div>
+      </div>
+      <div class="qs-card">
+        <div class="qs-icon" style="background:#EAF2ED;">✅</div>
+        <div>
+          <h4>Must-Haves</h4>
+          <p>Laundry, parking, pet-friendly, furnished, A/C, etc.</p>
+        </div>
+      </div>
+    </div>
+    <div class="qs-action">
+      <a href="#ai-section" class="btn-primary">💬 Use AI Assistant to Build My Plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios">
+  <div class="container">
+    <p class="section-label">Housing Scenarios</p>
+    <h2 class="section-title">Find a setup that fits your budget</h2>
+    <p class="section-sub">No listings — just honest breakdowns of what each housing type looks like in real life, so you can plan with confidence.</p>
+    <div class="scenarios-grid">
+      <div class="scenario-card s-low">
+        <div class="scenario-header">
+          <span class="scenario-tag">Low Budget</span>
+          <div class="scenario-rent">$400–$700<span style="font-size:1rem;font-weight:400">/mo</span></div>
+          <div class="scenario-label">per person</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-row"><strong>Setup</strong> Shared bedroom in a 3–4 person house</div>
+          <div class="scenario-row"><strong>Best for</strong> Students prioritizing savings over privacy</div>
+          <div class="scenario-row"><strong>Tradeoffs</strong> Less personal space, shared bathrooms, need strong communication with roommates</div>
+          <div class="scenario-row"><strong>Watch for</strong> Lease clarity on who signs, utility splitting agreements</div>
+        </div>
+      </div>
+      <div class="scenario-card s-mid">
+        <div class="scenario-header">
+          <span class="scenario-tag">Mid-Range</span>
+          <div class="scenario-rent">$700–$1,100<span style="font-size:1rem;font-weight:400">/mo</span></div>
+          <div class="scenario-label">per person</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-row"><strong>Setup</strong> Private room in a shared 2–3 person apartment</div>
+          <div class="scenario-row"><strong>Best for</strong> Students who value personal space with reasonable cost</div>
+          <div class="scenario-row"><strong>Tradeoffs</strong> Some shared spaces (kitchen/living), may need your own furniture</div>
+          <div class="scenario-row"><strong>Watch for</strong> Confirming what's included — parking, laundry, internet</div>
+        </div>
+      </div>
+      <div class="scenario-card s-high">
+        <div class="scenario-header">
+          <span class="scenario-tag">Higher Budget</span>
+          <div class="scenario-rent">$1,100–$1,800<span style="font-size:1rem;font-weight:400">/mo</span></div>
+          <div class="scenario-label">per person</div>
+        </div>
+        <div class="scenario-body">
+          <div class="scenario-row"><strong>Setup</strong> Studio or 1-bedroom apartment</div>
+          <div class="scenario-row"><strong>Best for</strong> Students needing quiet, privacy, or professional grad students</div>
+          <div class="scenario-row"><strong>Tradeoffs</strong> Higher upfront costs, fully responsible for all utilities and lease</div>
+          <div class="scenario-row"><strong>Watch for</strong> Lease length, subletting rules, renewal terms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEIGHBORHOODS -->
+<section id="neighborhoods">
+  <div class="container">
+    <p class="section-label">Neighborhood Guide</p>
+    <h2 class="section-title">Where you live matters as much as what</h2>
+    <p class="section-sub">Each area type near campus comes with its own cost, vibe, and tradeoffs. Here's what to know before you choose.</p>
+    <div class="nbhd-grid">
+      <div class="nbhd-card">
+        <div class="nbhd-icon">🏛</div>
+        <h3>Near Campus</h3>
+        <span class="nbhd-cost" style="background:var(--terracotta-light);color:var(--terracotta-dark);">$$$ Higher cost</span>
+        <p>Walkable to class, close to campus events and facilities. Often older buildings or college-specific complexes.</p>
+        <div class="pro-con">
+          <div class="pro-con-item pro">No car or transit needed</div>
+          <div class="pro-con-item pro">Easy access to campus resources</div>
+          <div class="pro-con-item pro">More student community feel</div>
+          <div class="pro-con-item con">Highest rent per square foot</div>
+          <div class="pro-con-item con">Can be noisy, high turnover</div>
+        </div>
+      </div>
+      <div class="nbhd-card">
+        <div class="nbhd-icon">🏡</div>
+        <h3>Residential Neighborhoods</h3>
+        <span class="nbhd-cost" style="background:var(--sky-light);color:var(--sky);">$$ Balanced cost</span>
+        <p>Quieter streets, more space, mix of students and families. Usually 10–25 min commute by bus or bike.</p>
+        <div class="pro-con">
+          <div class="pro-con-item pro">Better value per square foot</div>
+          <div class="pro-con-item pro">Quieter, more stable environment</div>
+          <div class="pro-con-item pro">Often larger units available</div>
+          <div class="pro-con-item con">Requires transit planning</div>
+          <div class="pro-con-item con">Less spontaneous campus access</div>
+        </div>
+      </div>
+      <div class="nbhd-card">
+        <div class="nbhd-icon">🚗</div>
+        <h3>Commuter Areas</h3>
+        <span class="nbhd-cost" style="background:var(--forest-light);color:var(--forest);">$ Lower cost</span>
+        <p>Further from campus, accessible by car or commuter transit. Often more suburban, more space for the price.</p>
+        <div class="pro-con">
+          <div class="pro-con-item pro">Most affordable rent options</div>
+          <div class="pro-con-item pro">More living space for the price</div>
+          <div class="pro-con-item con">30–60 min commute each way</div>
+          <div class="pro-con-item con">Car or reliable transit required</div>
+          <div class="pro-con-item con">Harder to stay for late study sessions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET PLANNER -->
+<section id="budget">
+  <div class="container">
+    <p class="section-label">Budget Planner</p>
+    <h2 class="section-title">What you'll actually need to spend</h2>
+    <p class="section-sub">Rent is just the start. Here's a realistic breakdown of all the costs students often miss when first budgeting for off-campus housing.</p>
+    <div class="budget-grid">
+      <div class="budget-card">
+        <div class="budget-icon">🏠</div>
+        <h4>Monthly Rent</h4>
+        <div class="budget-range">$400–$1,800</div>
+        <div class="budget-note">Per person, varies by type & area</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-icon">💡</div>
+        <h4>Utilities</h4>
+        <div class="budget-range">$50–$150/mo</div>
+        <div class="budget-note">Electric, gas, water (split with roommates)</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-icon">🔒</div>
+        <h4>Security Deposit</h4>
+        <div class="budget-range">1–2 months</div>
+        <div class="budget-note">Due at signing, refundable if no damage</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-icon">📋</div>
+        <h4>Application Fees</h4>
+        <div class="budget-range">$25–$75</div>
+        <div class="budget-note">Per adult applicant, non-refundable</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-icon">📦</div>
+        <h4>Moving Costs</h4>
+        <div class="budget-range">$150–$600</div>
+        <div class="budget-note">Truck rental, boxes, or movers</div>
+      </div>
+      <div class="budget-card">
+        <div class="budget-icon">🛋</div>
+        <h4>Furnishings</h4>
+        <div class="budget-range">$300–$1,500+</div>
+        <div class="budget-note">One-time cost for unfurnished units</div>
+      </div>
+    </div>
+    <div class="budget-tip">
+      <div class="budget-tip-icon">💡</div>
+      <p><strong>Pro tip:</strong> Budget 2–3× your monthly rent for move-in day costs. Security deposit + first month + application fees can add up to $2,000–$4,000 before you unpack a single box.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCAM SAFETY -->
+<section id="scams">
+  <div class="container">
+    <p class="section-label">Stay Safe</p>
+    <h2 class="section-title">Avoid scams & protect yourself</h2>
+    <p class="section-sub">Housing scams specifically target students. Know the red flags before you ever send a message — or a dollar.</p>
+    <div class="scams-layout">
+      <div class="scams-block">
+        <h3>🚩 Red flags to watch for</h3>
+        <ul class="scam-list">
+          <li>Price is unusually far below market rate</li>
+          <li>Landlord claims to be out of the country or unavailable in person</li>
+          <li>Asked to send deposit or first month before seeing the unit</li>
+          <li>Pressure to "claim it fast or lose it"</li>
+          <li>Only communication is via text or email — no phone/video calls</li>
+          <li>Can't verify the landlord owns the property</li>
+          <li>Requests payment via gift cards, Zelle, or wire transfer</li>
+        </ul>
+      </div>
+      <div class="scams-block">
+        <h3>✅ Safe steps before committing</h3>
+        <ul class="scam-list safe-list">
+          <li>Always tour the unit in person before paying anything</li>
+          <li>Look up property ownership records online (most counties have this free)</li>
+          <li>Search the address + "scam" or "reviews" before responding</li>
+          <li>Never wire money — use checks or payment with paper trail</li>
+          <li>Read the lease fully before signing anything</li>
+          <li>Ask for the landlord's full name and verify their identity</li>
+          <li>Get everything in writing — verbal promises mean nothing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATION CHECKLIST -->
+<section id="checklist">
+  <div class="container">
+    <p class="section-label">Application Prep</p>
+    <h2 class="section-title">What landlords typically ask for</h2>
+    <p class="section-sub">Being prepared with these documents puts you ahead of other applicants and speeds up the process significantly.</p>
+    <div class="checklist-grid">
+      <div class="check-card">
+        <h4>Identity</h4>
+        <div class="check-item"><div class="check-box"></div> Government-issued photo ID</div>
+        <div class="check-item"><div class="check-box"></div> Social Security number (or ITIN)</div>
+        <div class="check-item"><div class="check-box"></div> Student ID or enrollment verification</div>
+      </div>
+      <div class="check-card">
+        <h4>Financial</h4>
+        <div class="check-item"><div class="check-box"></div> Pay stubs or offer letter (if employed)</div>
+        <div class="check-item"><div class="check-box"></div> Financial aid award letter</div>
+        <div class="check-item"><div class="check-box"></div> Bank statements (last 2–3 months)</div>
+      </div>
+      <div class="check-card">
+        <h4>Credit & Co-signer</h4>
+        <div class="check-item"><div class="check-box"></div> Credit report or consent to check</div>
+        <div class="check-item"><div class="check-box"></div> Co-signer info (parent/guardian)</div>
+        <div class="check-item"><div class="check-box"></div> Co-signer's income verification</div>
+      </div>
+      <div class="check-card">
+        <h4>References</h4>
+        <div class="check-item"><div class="check-box"></div> Previous landlord reference</div>
+        <div class="check-item"><div class="check-box"></div> Personal/professional reference</div>
+        <div class="check-item"><div class="check-box"></div> Professor or advisor reference</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGE TEMPLATES -->
+<section id="templates">
+  <div class="container">
+    <p class="section-label">Message Templates</p>
+    <h2 class="section-title">Copy-ready messages for every step</h2>
+    <p class="section-sub">Not sure what to say? Use these as a starting point — personalize the highlighted fields before sending.</p>
+    <div class="templates-grid">
+      <div class="template-card">
+        <div class="template-head">📧 <h4>Contacting a Landlord</h4></div>
+        <div class="template-body">
+          Hi, my name is <em>[Your Name]</em>. I'm a student at <em>[Your School]</em> looking for housing starting <em>[Move-in Date]</em>. I'm interested in your listing at <em>[Address]</em>. Could you let me know if it's still available and what the application process looks like? Thank you!
+        </div>
+        <button class="copy-btn" onclick="copyText(this, 'Hi, my name is [Your Name]. I\'m a student at [Your School] looking for housing starting [Move-in Date]. I\'m interested in your listing at [Address]. Could you let me know if it\'s still available and what the application process looks like? Thank you!')">Copy template</button>
+      </div>
+      <div class="template-card">
+        <div class="template-head">🏠 <h4>Asking About Availability</h4></div>
+        <div class="template-body">
+          Hello! I came across your listing for a <em>[unit type]</em> near <em>[area/campus]</em>. I'm searching for a place from <em>[start date]</em> and wanted to confirm availability. Is the unit still open, and would it be possible to schedule a tour? I'm flexible on timing.
+        </div>
+        <button class="copy-btn" onclick="copyText(this, 'Hello! I came across your listing for a [unit type] near [area/campus]. I\'m searching for a place from [start date] and wanted to confirm availability. Is the unit still open, and would it be possible to schedule a tour? I\'m flexible on timing.')">Copy template</button>
+      </div>
+      <div class="template-card">
+        <div class="template-head">👥 <h4>Messaging a Potential Roommate</h4></div>
+        <div class="template-body">
+          Hey! I'm <em>[Your Name]</em>, a <em>[year/major]</em> student looking for housing near <em>[campus/area]</em> starting <em>[date]</em>. I'm <em>[describe yourself briefly]</em>. I'm looking for a respectful, clean living situation. Would love to chat if you're still searching for a roommate!
+        </div>
+        <button class="copy-btn" onclick="copyText(this, 'Hey! I\'m [Your Name], a [year/major] student looking for housing near [campus/area] starting [date]. I\'m [describe yourself]. I\'m looking for a respectful, clean living situation. Would love to chat if you\'re still searching for a roommate!')">Copy template</button>
+      </div>
+      <div class="template-card">
+        <div class="template-head">🔄 <h4>Following Up After a Tour</h4></div>
+        <div class="template-body">
+          Hi <em>[Landlord Name]</em>, thanks again for showing me the unit at <em>[Address]</em> on <em>[Date]</em>. I'm very interested and wanted to follow up on next steps. Could you let me know what's needed to move forward with an application? I'm ready to submit documents quickly.
+        </div>
+        <button class="copy-btn" onclick="copyText(this, 'Hi [Landlord Name], thanks again for showing me the unit at [Address] on [Date]. I\'m very interested and wanted to follow up on next steps. Could you let me know what\'s needed to move forward with an application? I\'m ready to submit documents quickly.')">Copy template</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEKLY PLAN -->
+<section id="timeline">
+  <div class="container">
+    <p class="section-label">Weekly Action Plan</p>
+    <h2 class="section-title">Your 4-week roadmap to housing</h2>
+    <p class="section-sub">Break the process into manageable chunks. Tackle one week at a time and you'll be signing a lease before you know it.</p>
+    <div class="timeline-grid">
+      <div class="week-card">
+        <div class="week-label">Week 1</div>
+        <div class="week-theme">Budget + Research</div>
+        <ul class="week-tasks">
+          <li>Set your max budget per month</li>
+          <li>Decide on housing type and roommates</li>
+          <li>Research neighborhoods around campus</li>
+          <li>Make a list of must-haves vs. nice-to-haves</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <div class="week-label">Week 2</div>
+        <div class="week-theme">Reach Out + Shortlist</div>
+        <ul class="week-tasks">
+          <li>Use message templates to contact landlords</li>
+          <li>Shortlist 3–5 viable options</li>
+          <li>Screen for red flags / scam indicators</li>
+          <li>Confirm availability and pricing details</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <div class="week-label">Week 3</div>
+        <div class="week-theme">Tours + Document Prep</div>
+        <ul class="week-tasks">
+          <li>Schedule and complete in-person tours</li>
+          <li>Take photos and notes at each visit</li>
+          <li>Gather application documents</li>
+          <li>Confirm co-signer if needed</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <div class="week-label">Week 4</div>
+        <div class="week-theme">Apply + Decide</div>
+        <ul class="week-tasks">
+          <li>Submit applications to top choices</li>
+          <li>Review lease carefully before signing</li>
+          <li>Clarify any unclear terms in writing</li>
+          <li>Finalize and sign — you've got a home!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI ASSISTANT -->
+<section id="ai-section">
+  <div class="ai-inner">
+    <div class="ai-text">
+      <p class="section-label">AI Assistant</p>
+      <h2 class="section-title">Get guidance built around your situation</h2>
+      <p class="section-sub">Answer a few questions and the AI assistant will create a personalized housing plan — budget breakdown, scenario match, neighborhood fit, and action steps.</p>
+      <div class="ai-features">
+        <div class="ai-feature">Personalized budget breakdown based on your numbers</div>
+        <div class="ai-feature">Matched housing scenario for your specific situation</div>
+        <div class="ai-feature">Week-by-week plan with your actual move-in date</div>
+        <div class="ai-feature">Answers to your specific questions anytime</div>
+      </div>
+      <a href="#" class="btn-primary btn-forest">💬 Start with AI Assistant</a>
+    </div>
+    <div class="ai-chat-preview">
+      <div class="chat-bubble chat-user">I need to move off campus in August. My budget is $800/mo. I don't have a car.</div>
+      <div class="chat-bubble chat-ai">Great — let's build your plan! With $800/month and no car, you'll want to focus on residential neighborhoods with good bus routes. Here's what I'd recommend...</div>
+      <div style="display:flex;gap:4px;align-items:center;padding:0.75rem 1rem;">
+        <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.6);">AI</div>
+        <div class="chat-typing" style="padding:0;">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div id="disclaimer">
+  <div class="disclaimer-box">
+    <div class="disclaimer-icon">ℹ️</div>
+    <p><strong>Educational Guidance Only:</strong> This platform provides general educational guidance only and does not provide legal, financial, or housing guarantees. Rental prices, availability, and requirements vary by location and change frequently. Always conduct your own research and consult a qualified professional for legal or financial advice before signing any lease or making housing decisions.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="font-family:'Fraunces',serif;font-size:1.1rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">🧭 Crib Compass</p>
+  <p>A student housing guidance platform &nbsp;·&nbsp; <a href="#disclaimer">Disclaimer</a> &nbsp;·&nbsp; <a href="#ai-section">AI Assistant</a></p>
+</footer>
+
+<script>
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.style.color = 'var(--forest-mid)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
