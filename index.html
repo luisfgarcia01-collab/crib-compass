@@ -740,16 +740,20 @@
         <div class="ai-feature">Week-by-week plan with your actual move-in date</div>
         <div class="ai-feature">Answers to your specific questions anytime</div>
       </div>
-      <a href="#" class="btn-primary btn-forest">💬 Start with AI Assistant</a>
+      <a href="#chatApp" class="btn-primary btn-forest">💬 Start with AI Assistant</a>
     </div>
-    <div class="ai-chat-preview">
-      <div class="chat-bubble chat-user">I need to move off campus in August. My budget is $800/mo. I don't have a car.</div>
-      <div class="chat-bubble chat-ai">Great — let's build your plan! With $800/month and no car, you'll want to focus on residential neighborhoods with good bus routes. Here's what I'd recommend...</div>
-      <div style="display:flex;gap:4px;align-items:center;padding:0.75rem 1rem;">
-        <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:rgba(255,255,255,0.6);">AI</div>
-        <div class="chat-typing" style="padding:0;">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
+
+    <div class="ai-chat-preview" id="chatApp">
+      <div id="chatMessages" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;max-height:320px;overflow-y:auto;"></div>
+
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input
+          id="chatInput"
+          type="text"
+          placeholder="Ask about housing, budget, roommates, scams..."
+          style="flex:1;padding:12px 14px;border-radius:10px;border:none;font-size:14px;"
+        />
+        <button id="sendBtn" class="btn-primary btn-forest" type="button">Send</button>
       </div>
     </div>
   </div>
@@ -778,6 +782,53 @@ function copyText(btn, text) {
     setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
   });
 }
+</script>
+
+<script>
+const API_URL = "https://YOUR-BACKEND-URL.onrender.com/chat";
+
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+
+function addMessage(text, role) {
+  const div = document.createElement("div");
+  div.className = "chat-bubble " + (role === "user" ? "chat-user" : "chat-ai");
+  div.textContent = text;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  chatInput.value = "";
+  sendBtn.disabled = true;
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+    addMessage(data.reply || "No response from AI.", "assistant");
+  } catch (err) {
+    addMessage("Error connecting to AI.", "assistant");
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+sendBtn.addEventListener("click", sendMessage);
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
 </script>
 
 </body>
